@@ -106,25 +106,30 @@ Module.register("MMM-Page-Selector", {
 		return ref;
 	},
 
-	moveRefToLoc: function(ref, loc){
+moveRefToLoc: function(ref, loc){ // modified to include a _SKIP on class in the pages def to skip position move as long as the original in config is in the right one
 		const self = this;
 		function insertAfter(newNode, referenceNode) {
 		    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 		}
-
-		//Search for the correct container to append the module into
-		var moveToRef = document.getElementsByClassName(loc.replace("_", " "))[0];
-		if(typeof moveToRef === "undefined"){
-			Log.error("Incorrect Position string for module:", ref);
-			return false;
-		}
-		var containers = Array.from(moveToRef.childNodes);
-		var container = containers.filter(node => node.className == "container")[0]
-		if(loc === "top_bar"){
-			insertAfter(ref, self.getModuleRef(self))
-		}else{
-			container.append(ref);
-		}
+        if (loc.includes("SKIP")){
+            self.sendNotification("SHOW_ALERT", {title: this.name, message: "SKIPPING: "+loc, timer: 5000});
+            return;
+        }else{
+            
+            //Search for the correct container to append the module into
+            var moveToRef = document.getElementsByClassName(loc.replace("_", " "))[0];
+            if(typeof moveToRef === "undefined"){
+                Log.error("Incorrect Position string for module:", ref);
+                return false;
+            }
+            var containers = Array.from(moveToRef.childNodes);
+            var container = containers.filter(node => node.className == "container")[0]
+            if(loc === "top_bar"){
+                insertAfter(ref, self.getModuleRef(self))
+            }else{
+                container.append(ref);
+            }
+        }
 	},
 
 	removeClasses: function(ref, classes){
