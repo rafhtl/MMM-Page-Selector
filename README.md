@@ -10,7 +10,7 @@ cd ~/MagicMirror/modules
 
 Clone the repository.
 ```bash
-git clone https://github.com/Veldrovive/MMM-Page-Selector.git
+git clone https://github.com/rafhtl/MMM-Page-Selector.git
 ```
 
 ## Usage
@@ -52,7 +52,7 @@ For example, specifying `pages: {"main": "bottom_center", "fun": "top_right"}` w
 
 If `pages` is set to `{"all": "position_string"}`, then the module will always appear in the position defined by the position_string.
 
-Example of a complete config for a very simple mirror (Click [here](https://github.com/Veldrovive/MMM-Page-Selector/issues/3#issuecomment-433203300) for a more complicated example):
+
 ```js
 modules: [
     {
