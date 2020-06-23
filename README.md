@@ -216,3 +216,8 @@ this.sendNotification("PAGE_SELECT", "weather");
 When the page changes, a notification is sent to `"PAGE_CHANGED"` with the payload being the index of the page.
 
 - This module was developed along side [MMM-Voice-Commands](https://github.com/Veldrovive/MMM-Voice-Commands). For information on how they interact, follow the link and scroll to the bottom of the README
+
+
+## rafHTL
+added  pagename to be broadcasted
+self.sendNotification("PAGE_CHANGED", {pagenumber: indexOfPage, pagename: pageName});
