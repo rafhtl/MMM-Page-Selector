@@ -106,27 +106,25 @@ Module.register("MMM-Page-Selector", {
 		return ref;
 	},
 
-moveRefToLoc: function(ref, loc){ 
+	moveRefToLoc: function(ref, loc){
 		const self = this;
 		function insertAfter(newNode, referenceNode) {
 		    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 		}
-        
-            
-            //Search for the correct container to append the module into
-            var moveToRef = document.getElementsByClassName(loc.replace("_", " "))[0];
-            if(typeof moveToRef === "undefined"){
-                Log.error("Incorrect Position string for module:", ref);
-                return false;
-            }
-            var containers = Array.from(moveToRef.childNodes);
-            var container = containers.filter(node => node.className == "container")[0]
-            if(loc === "top_bar"){
-                insertAfter(ref, self.getModuleRef(self))
-            }else{
-                container.append(ref);
-            }
-        
+
+		//Search for the correct container to append the module into
+		var moveToRef = document.getElementsByClassName(loc.replace("_", " "))[0];
+		if(typeof moveToRef === "undefined"){
+			Log.error("Incorrect Position string for module:", ref);
+			return false;
+		}
+		var containers = Array.from(moveToRef.childNodes);
+		var container = containers.filter(node => node.className == "container")[0]
+		if(loc === "top_bar"){
+			insertAfter(ref, self.getModuleRef(self))
+		}else{
+			container.append(ref);
+		}
 	},
 
 	removeClasses: function(ref, classes){
@@ -243,8 +241,11 @@ moveRefToLoc: function(ref, loc){
 			    }, self.config.restoreDefault*1000)
 			}
 		}else if(self.incrementPageNotif.includes(notification)){
+            
 			self.changePage(1, true)
+            
 		}else if(self.decrementPageNotif.includes(notification)){
+            
 			self.changePage(-1, true)
 		}else if(notification === "MODULE_DOM_CREATED"){
 			MM.getModules().enumerate(module => {
