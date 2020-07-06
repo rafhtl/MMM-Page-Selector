@@ -155,53 +155,70 @@ module.exports = NodeHelper.create({
 			const pageNames = Object.keys(pages);
 
 			pageNames.forEach(page_name => {
+                
 				const page = pages[page_name];
 				const page_module_names = Object.keys(page);
-				const page_store = {};
-				pageConfig[page_name.toLowerCase()] = Array(page_module_names.length);
-
-				modules.forEach((module, index) => {
-					const module_name = module.module;
-					const name = module.name;
-					const id = `module_${index}_${module_name}`;
-					if(page_module_names.includes(module_name)){
-						if(typeof module.position === "undefined"){
-							reRender = true;
-							module.position = page[module_name]
-						}
-						page_store[id] = {position: page[module_name], index: page_module_names.indexOf(module_name)};
-					}
-					if(name !== undefined && page_module_names.includes(name)){
-						if(typeof module.position === "undefined"){
-							let newPos = page[name];
-							if(typeof newPos === "undefined" || newPos.toLowerCase() === "none" || newPos === false){
-								newPos = undefined
-							}
-							if(typeof newPos !== "undefined"){
-								reRender = true;
-								module.position = page[name];
-							}
-						}
-						page_store[id] = {position: page[name], index: page_module_names.indexOf(name)};
-					}
-				})
-				pagePositions = []
-				Object.keys(page_store).forEach(id => {
-					let count = 0;
-					while(typeof pagePositions[page_store[id].index] !== "undefined"){
-						if(count > 1000){
-							throw "Breaking out of loop. If you had this many modules with the same name you messed up anyways."
-						}
-						count++;
-						page_store[id].index++;
-					}
-					pagePositions[page_store[id].index] = {
-						"position": page_store[id].position,
-						"identifier": id
-					}
-				})
-				pageConfig[page_name.toLowerCase()] = pagePositions
-			})
+                var skip_this_page = false;
+                console.log( this.name+" : "+String(page_module_names));
+                if( page_module_names.includes("disabled") ) //skip the page creation
+                {
+                    
+                    if( String(page["disabled"])=="true" ) //skip the page creation
+                    {
+                        skip_this_page = true;
+                    }
+                }
+                
+                if (!skip_this_page){
+                    const page_store = {};
+                    pageConfig[page_name.toLowerCase()] = Array(page_module_names.length);
+                    
+                    
+                    modules.forEach((module, index) => {
+                        const module_name = module.module;
+                        
+                        const name = module.name;
+                        const id = `module_${index}_${module_name}`;
+                        if(page_module_names.includes(module_name)){
+                            if(typeof module.position === "undefined"){
+                                reRender = true;
+                                module.position = page[module_name]
+                            }
+                            page_store[id] = {position: page[module_name], index: page_module_names.indexOf(module_name)};
+                        }
+                        if(name !== undefined && page_module_names.includes(name)){
+                            if(typeof module.position === "undefined"){
+                                let newPos = page[name];
+                                if(typeof newPos === "undefined" || newPos.toLowerCase() === "none" || newPos === false){
+                                    newPos = undefined
+                                }
+                                if(typeof newPos !== "undefined"){
+                                    reRender = true;
+                                    module.position = page[name];
+                                }
+                            }
+                            page_store[id] = {position: page[name], index: page_module_names.indexOf(name)};
+                        }
+                    })
+                    pagePositions = []
+                    Object.keys(page_store).forEach(id => {
+                        let count = 0;
+                        while(typeof pagePositions[page_store[id].index] !== "undefined"){
+                            if(count > 1000){
+                                throw "Breaking out of loop. If you had this many modules with the same name you messed up anyways."
+                            }
+                            count++;
+                            page_store[id].index++;
+                        }
+                        pagePositions[page_store[id].index] = {
+                            "position": page_store[id].position,
+                            "identifier": id
+                        }
+                    })
+                    pageConfig[page_name.toLowerCase()] = pagePositions
+                }
+            })
+            
 			if(config.hasOwnProperty("exclusions")){
 				const excluded_names = Object.keys(config.exclusions);
 				modules.forEach((module, index) => {

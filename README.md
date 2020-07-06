@@ -221,3 +221,10 @@ When the page changes, a notification is sent to `"PAGE_CHANGED"` with the paylo
 ## rafHTL
 added  pagename to be broadcasted
 self.sendNotification("PAGE_CHANGED", {pagenumber: indexOfPage, pagename: pageName});
+
+added in pages config
+"disabled": String(config_module_email_disabled),
+or
+"disabled":"true"
+
+will skip the page creation if config_module_email_disabled=true
