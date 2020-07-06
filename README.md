@@ -228,3 +228,5 @@ or
 "disabled":"true"
 
 will skip the page creation if config_module_email_disabled=true
+
+corrected problem with disabled module mm would not start

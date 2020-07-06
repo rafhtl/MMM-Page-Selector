@@ -167,7 +167,7 @@ module.exports = NodeHelper.create({
                     {
                         skip_this_page = true;
                     }
-                    page_module_names.splice("disabled",1);
+                    page_module_names.splice("disabled",1);  //disabled needs to be purged from array json
                 }
                 
                 if (!skip_this_page){
@@ -179,8 +179,8 @@ module.exports = NodeHelper.create({
                         const module_name = module.module;
                         
                         const name = module.name;
-                        
-                        
+                        if(!module.disabled){
+                            
                             const id = `module_${index}_${module_name}`;
                             if(page_module_names.includes(module_name)){
                                 if(typeof module.position === "undefined"){
@@ -202,7 +202,7 @@ module.exports = NodeHelper.create({
                                 }
                                 page_store[id] = {position: page[name], index: page_module_names.indexOf(name)};
                             }
-                        
+                        }
                     })
                     pagePositions = []
                     Object.keys(page_store).forEach(id => {
