@@ -159,7 +159,7 @@ module.exports = NodeHelper.create({
 				const page = pages[page_name];
 				const page_module_names = Object.keys(page);
                 var skip_this_page = false;
-                console.log( this.name+" : "+String(page_module_names));
+                
                 if( page_module_names.includes("disabled") ) //skip the page creation
                 {
                     
@@ -167,6 +167,7 @@ module.exports = NodeHelper.create({
                     {
                         skip_this_page = true;
                     }
+                    page_module_names.splice("disabled",1);
                 }
                 
                 if (!skip_this_page){
@@ -178,27 +179,30 @@ module.exports = NodeHelper.create({
                         const module_name = module.module;
                         
                         const name = module.name;
-                        const id = `module_${index}_${module_name}`;
-                        if(page_module_names.includes(module_name)){
-                            if(typeof module.position === "undefined"){
-                                reRender = true;
-                                module.position = page[module_name]
-                            }
-                            page_store[id] = {position: page[module_name], index: page_module_names.indexOf(module_name)};
-                        }
-                        if(name !== undefined && page_module_names.includes(name)){
-                            if(typeof module.position === "undefined"){
-                                let newPos = page[name];
-                                if(typeof newPos === "undefined" || newPos.toLowerCase() === "none" || newPos === false){
-                                    newPos = undefined
-                                }
-                                if(typeof newPos !== "undefined"){
+                        
+                        
+                            const id = `module_${index}_${module_name}`;
+                            if(page_module_names.includes(module_name)){
+                                if(typeof module.position === "undefined"){
                                     reRender = true;
-                                    module.position = page[name];
+                                    module.position = page[module_name]
                                 }
+                                page_store[id] = {position: page[module_name], index: page_module_names.indexOf(module_name)};
                             }
-                            page_store[id] = {position: page[name], index: page_module_names.indexOf(name)};
-                        }
+                            if(name !== undefined && page_module_names.includes(name)){
+                                if(typeof module.position === "undefined"){
+                                    let newPos = page[name];
+                                    if(typeof newPos === "undefined" || newPos.toLowerCase() === "none" || newPos === false){
+                                        newPos = undefined
+                                    }
+                                    if(typeof newPos !== "undefined"){
+                                        reRender = true;
+                                        module.position = page[name];
+                                    }
+                                }
+                                page_store[id] = {position: page[name], index: page_module_names.indexOf(name)};
+                            }
+                        
                     })
                     pagePositions = []
                     Object.keys(page_store).forEach(id => {
